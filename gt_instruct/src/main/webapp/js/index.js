@@ -49,7 +49,7 @@ var vm = new Vue({
                 .then(function (response) {
                     var _data = response.data;
                     _this.fullscreenLoading = false;
-                    console.log(_data);
+                    // console.log(_data);
                     if (_data.code == 100) {
                         _this.$alert("服务关闭", '运行结果');
                     } else {
@@ -69,7 +69,7 @@ var vm = new Vue({
                 .then(function (response) {
                     var _data = response.data;
                     _this.fullscreenLoading = false;
-                    console.log(_data);
+                    // console.log(_data);
                     if (_data.code == 100) {
                         _this.$alert("代码同步", '运行结果');
                     } else {
@@ -89,7 +89,7 @@ var vm = new Vue({
                 .then(function (response) {
                     var _data = response.data;
                     _this.fullscreenLoading = false;
-                    console.log(_data);
+                    // console.log(_data);
                     if (_data.code == 100) {
                         _this.$alert("清理PID", '运行结果');
                     } else {
@@ -109,10 +109,10 @@ var vm = new Vue({
                 .then(function (response) {
                     var _data = response.data;
                     _this.fullscreenLoading = false;
-                    console.log(_data);
+                    // console.log(_data);
                     if (_data.code == 100) {
                         _this.tableData = _data.data;
-                        console.log(_this.tableData);
+                        // console.log(_this.tableData);
                     } else {
                         _this.$alert(_data.message, '请求失败');
                     }
@@ -133,7 +133,7 @@ var vm = new Vue({
             var _this = this;
             var _url = paramData.serverHealthUrl;
             axios.get(_url).then(res => {
-                console.log(res.status);
+                // console.log(res.status);
                 _this.tableData[id].serverStatus = res.status;
             }).catch(error => {
                 _this.tableData[id].serverStatus = 0;
