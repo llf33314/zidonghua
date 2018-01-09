@@ -22,6 +22,16 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.7</java.version>
+		<dev.lib.druid-spring-boot-starter>1.1.2</dev.lib.druid-spring-boot-starter>
+		<dev.lib.mybatis>1.1.1</dev.lib.mybatis>
+		<dev.lib.pagehelper>3.7.5</dev.lib.pagehelper>
+		<dev.lib.common-net>3.6</dev.lib.common-net>
+		<dev.lib.fastjson>1.2.33</dev.lib.fastjson>
+		<dev.lib.swagger2>2.6.0</dev.lib.swagger2>
+		<dev.lib.mybatis-plus>2.1.0</dev.lib.mybatis-plus>
+		<dev.lib.mybatisplus-spring-boot-starter>1.0.4</dev.lib.mybatisplus-spring-boot-starter>
+		<dev.lib.lombok>1.16.18</dev.lib.lombok>
+		<dev.lib.velocity>1.7</dev.lib.velocity>
 	</properties>
 
 	<dependencies>
@@ -29,12 +39,109 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-tomcat</artifactId>
-			<scope>provided</scope>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
+
+		<!-- @Configuration注解建议引入 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<!-- json 包 -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>${dev.lib.fastjson}</version>
+		</dependency>
+
+		<!-- Swagger API文档 -->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>${dev.lib.swagger2}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>${dev.lib.swagger2}</version>
+		</dependency>
+
+		<!--druid-->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+			<version>1.0.31</version>
+		</dependency>
+
+		<!-- mysql驱动 -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- mybatisPlus代码生成模板引擎 -->
+		<dependency>
+			<groupId>org.apache.velocity</groupId>
+			<artifactId>velocity</artifactId>
+			<version>${dev.lib.velocity}</version>
+		</dependency>
+
+		<!-- MP 核心库 -->
+		<dependency>
+			<groupId>com.baomidou</groupId>
+			<artifactId>mybatis-plus</artifactId>
+			<version>${dev.lib.mybatis-plus}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.baomidou</groupId>
+			<artifactId>mybatisplus-spring-boot-starter</artifactId>
+			<version>${dev.lib.mybatisplus-spring-boot-starter}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${dev.lib.lombok}</version>
+		</dependency>
+
+		<!-- page 分页插件 -->
+		<dependency>
+			<groupId>com.github.pagehelper</groupId>
+			<artifactId>pagehelper</artifactId>
+			<version>${dev.lib.pagehelper}</version>
+		</dependency>
+
+		<!-- commons-net -->
+		<dependency>
+			<groupId>commons-net</groupId>
+			<artifactId>commons-net</artifactId>
+			<version>${dev.lib.common-net}</version>
+		</dependency>
+
+		<!-- axis 数据接口包 -->
+		<dependency>
+			<groupId>com.gt.insos.common.axis</groupId>
+			<artifactId>insos_common_axis</artifactId>
+			<version>2.0.0-SNAPSHOT</version>
+		</dependency>
+
+		<!-- 热部署-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional><!-- optional=true,依赖不会传递，该项目依赖devtools；之后依赖myboot项目的项目如果想要使用devtools，需要重新引入 -->
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>

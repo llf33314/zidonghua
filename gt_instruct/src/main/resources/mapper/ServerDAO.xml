@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gt.instruct.core.dao.ServerDAO">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.gt.instruct.core.entity.Server">
+		<id column="id" property="id" />
+		<result column="server_name" property="serverName" />
+		<result column="server_env" property="serverEnv" />
+		<result column="project_name" property="projectName" />
+		<result column="project_db" property="projectDb" />
+		<result column="server_health_url" property="serverHealthUrl" />
+		<result column="server_status" property="serverStatus" />
+		<result column="create_time" property="createTime" />
+	</resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, server_name, server_env, project_name, project_db, server_health_url, server_status, create_time
+    </sql>
+
+</mapper>
