@@ -1,4 +1,3 @@
-// var basePscmdUrl = '/index/rumPscmd/';
 var baseStartcmdUrl = '/app/instruct/rumStartcmd/';
 var baseStopcmdUrl = '/app/instruct/rumStopcmd/';
 var baseSynchroUrl = '/app/instruct/rumSynchrocmd/';
@@ -8,7 +7,14 @@ var vm = new Vue({
     el: '#vm',
     data: {
         tableData: [],
-        fullscreenLoading: false
+        fullscreenLoading: false,
+    },
+    mounted: function () {
+        this.forHealth();
+        var _this = this;
+        setInterval(function () {
+            _this.forHealth();
+        }, 5000);
     },
     created() {
         this.listServer();
@@ -114,6 +120,24 @@ var vm = new Vue({
                 .catch(function () {
                     _this.fullscreenLoading = false;
                 });
+        },
+        forHealth: function () {
+            // 健康检测循环
+            var _this = this;
+            this.tableData.forEach(function (item, index) {
+                _this.isHealth(item, index);
+            });
+        },
+        isHealth: function (paramData, id) {
+            // 健康检测
+            var _this = this;
+            var _url = paramData.serverHealthUrl;
+            axios.get(_url).then(res => {
+                console.log(res.status);
+                _this.tableData[id].serverStatus = res.status;
+            }).catch(error => {
+                _this.tableData[id].serverStatus = 0;
+            });
         }
     }
 });
