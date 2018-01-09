@@ -2,6 +2,7 @@
 var baseStartcmdUrl = '/app/instruct/rumStartcmd/';
 var baseStopcmdUrl = '/app/instruct/rumStopcmd/';
 var baseSynchroUrl = '/app/instruct/rumSynchrocmd/';
+var basePscmdUrl = '/app/instruct/rumPscmd/';
 var baseListServerUrl = '/app/instruct/listServer/';
 var vm = new Vue({
     el: '#vm',
@@ -14,7 +15,7 @@ var vm = new Vue({
     },
     methods: {
         startcmd: function (paramData) {
-            // TODO 启动服务
+            // 启动服务
             this.fullscreenLoading = true;
             var _url = baseStartcmdUrl + paramData.projectName;
             var _this = this;
@@ -24,7 +25,7 @@ var vm = new Vue({
                     _this.fullscreenLoading = false;
                     console.log(_data);
                     if (_data.code == 100) {
-                        _this.$alert(_data.message, '运行结果');
+                        _this.$alert("服务启动", '运行结果');
                     } else {
                         _this.$alert(_data.message, '请求失败');
                     }
@@ -34,7 +35,7 @@ var vm = new Vue({
                 });
         },
         stopcmd: function (paramData) {
-            // TODO 关闭服务
+            // 关闭服务
             this.fullscreenLoading = true;
             var _url = baseStopcmdUrl + paramData.projectName;
             var _this = this;
@@ -44,7 +45,7 @@ var vm = new Vue({
                     _this.fullscreenLoading = false;
                     console.log(_data);
                     if (_data.code == 100) {
-                        _this.$alert(_data.message, '运行结果');
+                        _this.$alert("服务关闭", '运行结果');
                     } else {
                         _this.$alert(_data.message, '请求失败');
                     }
@@ -54,7 +55,7 @@ var vm = new Vue({
                 });
         },
         synchro: function (paramData) {
-            // TODO 同步代码
+            // 同步代码
             this.fullscreenLoading = true;
             var _url = baseSynchroUrl + paramData.projectName;
             var _this = this;
@@ -64,7 +65,27 @@ var vm = new Vue({
                     _this.fullscreenLoading = false;
                     console.log(_data);
                     if (_data.code == 100) {
-                        _this.$alert(_data.message, '运行结果');
+                        _this.$alert("代码同步", '运行结果');
+                    } else {
+                        _this.$alert(_data.message, '请求失败');
+                    }
+                })
+                .catch(function () {
+                    _this.fullscreenLoading = false;
+                });
+        },
+        killps: function (paramData) {
+            // 清理PID
+            this.fullscreenLoading = true;
+            var _url = basePscmdUrl + paramData.projectName;
+            var _this = this;
+            axios.post(_url)
+                .then(function (response) {
+                    var _data = response.data;
+                    _this.fullscreenLoading = false;
+                    console.log(_data);
+                    if (_data.code == 100) {
+                        _this.$alert("清理PID", '运行结果');
                     } else {
                         _this.$alert(_data.message, '请求失败');
                     }
@@ -74,7 +95,7 @@ var vm = new Vue({
                 });
         },
         listServer: function () {
-            // TODO 获取服务列表
+            // 获取服务列表
             this.fullscreenLoading = true;
             var _url = baseListServerUrl;
             var _this = this;
