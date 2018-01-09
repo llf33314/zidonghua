@@ -25,12 +25,21 @@ public class TokenServiceImpl implements TokenService {
     @Override
     public UserDTO getUserByToken(String token) {
         try {
+            String url = ssoUrl + "token/getUserByToken";
             HttpEntity<String> formEntity = new HttpEntity<>(token, null);
-            Map map = restTemplate.postForObject(ssoUrl, formEntity, Map.class);
-            if (!map.get("code").equals("100")) {
+            Map map = restTemplate.postForObject(url, formEntity, Map.class);
+            String code = String.valueOf(map.get("code"));
+            if (!"100".equals(code)) {
                 return null;
             }
-            UserDTO userDTO = (UserDTO) map.get("data");
+            Map<String, Object> dataMap = (Map<String, Object>) map.get("data");
+            UserDTO userDTO = new UserDTO();
+            Object userId = dataMap.get("userId");
+            Object userName = dataMap.get("userName");
+            Object roleStatus = dataMap.get("roleStatus");
+            userDTO.setUserId(Integer.valueOf(userId.toString()));
+            userDTO.setUserName(String.valueOf(userName.toString()));
+            userDTO.setRoleStatus(Integer.valueOf(roleStatus.toString()));
             return userDTO;
         } catch (Exception e) {
             e.printStackTrace();

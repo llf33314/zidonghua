@@ -43,4 +43,12 @@ public interface InstructService {
      * @return
      */
     List<Server> listServer() throws Exception;
+
+    /**
+     * 清除PID
+     *
+     * @param projectName
+     * @return
+     */
+    String rumPscmd(String projectName) throws Exception;
 }

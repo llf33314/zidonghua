@@ -1,6 +1,11 @@
 package com.gt.instruct.common.filter;
 
+import com.gt.insos.common.axis.user.bean.dto.UserDTO;
+import com.gt.instruct.common.util.CommonUtil;
+import com.gt.instruct.core.service.TokenService;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +19,12 @@ import java.io.IOException;
 public class AppFilter implements Filter {
 
     private static Logger logger = Logger.getLogger(AppFilter.class);
+
+    @Value("${instruct.login.url}")
+    private String loginUrl;
+
+    @Autowired
+    TokenService tokenService;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -36,7 +47,20 @@ public class AppFilter implements Filter {
 
         logger.debug("app filter");
 
-        filterChain.doFilter(servletRequest, servletResponse);
+        String token = (String) httpServletRequest.getSession().getAttribute("token");
+        if (token == null) {
+            httpServletResponse.sendRedirect(loginUrl);
+            return;
+        } else {
+            //不为空
+            UserDTO userDTO = tokenService.getUserByToken(token);
+            if (CommonUtil.isEmpty(userDTO)) {
+                httpServletResponse.sendRedirect(loginUrl);
+                return;
+            } else {
+                filterChain.doFilter(servletRequest, servletResponse);
+            }
+        }
     }
 
     @Override

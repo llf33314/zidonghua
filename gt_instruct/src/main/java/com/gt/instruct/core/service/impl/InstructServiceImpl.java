@@ -38,6 +38,9 @@ public class InstructServiceImpl implements InstructService {
     @Value("${instruct.syn.prefix}")
     private String synPrefix;
 
+    @Value("${instruct.ps.prefix}")
+    private String psPrefix;
+
     @Autowired
     ServerService serverService;
 
@@ -84,7 +87,22 @@ public class InstructServiceImpl implements InstructService {
         String cmd = homeUrl + projectName + synPrefix + homeSuffix;
         String result = commonService.runCmd(cmd);
         log.debug(result);
-        // TODO 同时复制一份到备份目录中
+        return result;
+    }
+
+    /**
+     * 清除项目PID
+     *
+     * @param projectName
+     * @return
+     * @exception Exception
+     */
+    @Override
+    public String rumPscmd(String projectName) throws Exception {
+        // 将项目复制到项目中
+        String cmd = homeUrl + projectName + psPrefix + homeSuffix;
+        String result = commonService.runCmd(cmd);
+        log.debug(result);
         return result;
     }
 

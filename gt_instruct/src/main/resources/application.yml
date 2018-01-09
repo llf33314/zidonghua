@@ -19,6 +19,8 @@ instruct:
     prefix: stop
   syn:
     prefix: syn
+  ps:
+    prefix: ps
 
 ###### spring
 spring:

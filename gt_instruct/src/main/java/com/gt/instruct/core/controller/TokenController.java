@@ -17,7 +17,6 @@ public class TokenController {
 
     @RequestMapping(value = "/{token}", method = RequestMethod.GET)
     public String loginToken(@PathVariable String token, HttpServletRequest request) {
-        System.out.println(token);
         if (token != null) {
             request.getSession().setAttribute("token", token);
         }

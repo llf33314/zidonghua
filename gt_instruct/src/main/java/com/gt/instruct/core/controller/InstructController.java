@@ -116,4 +116,27 @@ public class InstructController {
         }
     }
 
+
+    /**
+     * 清除PID
+     *
+     * @param projectName
+     * @return
+     */
+    @ApiOperation(value = "清除PID")
+    @RequestMapping(value = "rumPscmd/{projectName}", method = RequestMethod.POST)
+    public ResponseDTO rumPscmd(@PathVariable String projectName) {
+        try {
+            logger.debug(projectName);
+            String results = instructService.rumPscmd(projectName);
+            return ResponseDTO.createBySuccess(results);
+        } catch (SystemException e) {
+            logger.error(e.getMessage(), e.fillInStackTrace());
+            return ResponseDTO.createByErrorCodeMessage(e.getCode(), e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDTO.createByError();
+        }
+    }
+
 }
