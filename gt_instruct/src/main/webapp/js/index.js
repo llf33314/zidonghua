@@ -130,6 +130,9 @@ var vm = new Vue({
         },
         isHealth: function (paramData, id) {
             // 健康检测
+            if (paramData.serverHealthUrl == null || paramData.serverHealthUrl == ''){
+                return;
+            }
             var _this = this;
             var _url = paramData.serverHealthUrl;
             axios.get(_url).then(res => {
