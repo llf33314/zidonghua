@@ -1,0 +1,1 @@
+\cp -rf /home/server/instruct/code/jxcerp/jxc/* /home/server/project/jxcerp/jxc/

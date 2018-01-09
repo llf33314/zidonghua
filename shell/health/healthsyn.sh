@@ -1,0 +1,1 @@
+\cp -rf /home/server/instruct/code/health/MedicalSys/* /home/server/project/health/MedicalSys/

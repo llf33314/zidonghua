@@ -1,0 +1,1 @@
+\cp -rf /home/server/instruct/code/home/webSite/* /home/server/project/home/webSite/

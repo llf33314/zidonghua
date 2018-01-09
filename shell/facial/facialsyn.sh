@@ -1,0 +1,1 @@
+\cp -rf /home/server/instruct/code/facial/lookErp/* /home/server/project/facial/lookErp/
