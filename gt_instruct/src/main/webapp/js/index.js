@@ -2,6 +2,7 @@ var baseStartcmdUrl = '/app/instruct/rumStartcmd/';
 var baseStopcmdUrl = '/app/instruct/rumStopcmd/';
 var baseSynchroUrl = '/app/instruct/rumSynchrocmd/';
 var basePscmdUrl = '/app/instruct/rumPscmd/';
+var baseChgcmdUrl = '/app/instruct/rumChgcmd/';
 var baseListServerUrl = '/app/instruct/listServer/';
 var vm = new Vue({
     el: '#vm',
@@ -92,6 +93,26 @@ var vm = new Vue({
                     // console.log(_data);
                     if (_data.code == 100) {
                         _this.$alert("清理PID", '运行结果');
+                    } else {
+                        _this.$alert(_data.message, '请求失败');
+                    }
+                })
+                .catch(function () {
+                    _this.fullscreenLoading = false;
+                });
+        },
+        chgcmd: function (paramData) {
+            // 更换目录
+            this.fullscreenLoading = true;
+            var _url = baseChgcmdUrl + paramData.projectName;
+            var _this = this;
+            axios.post(_url)
+                .then(function (response) {
+                    var _data = response.data;
+                    _this.fullscreenLoading = false;
+                    // console.log(_data);
+                    if (_data.code == 100) {
+                        _this.$alert("更换目录", '运行结果');
                     } else {
                         _this.$alert(_data.message, '请求失败');
                     }

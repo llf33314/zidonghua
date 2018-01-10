@@ -41,6 +41,9 @@ public class InstructServiceImpl implements InstructService {
     @Value("${instruct.ps.prefix}")
     private String psPrefix;
 
+    @Value("${instruct.chg.prefix}")
+    private String chgPrefix;
+
     @Autowired
     ServerService serverService;
 
@@ -117,6 +120,21 @@ public class InstructServiceImpl implements InstructService {
         entityWrapper.eq("server_status", 0);
         List<Server> serverList = serverService.selectList(entityWrapper);
         return serverList;
+    }
+
+    /**
+     * 更换目录不需要的文件
+     *
+     * @param projectName
+     * @return
+     */
+    @Override
+    public String rumChgcmd(String projectName) throws Exception {
+        // 将项目复制到项目中
+        String cmd = homeUrl + projectName + chgPrefix + homeSuffix;
+        String result = commonService.runCmd(cmd);
+        log.debug(result);
+        return result;
     }
 }
 

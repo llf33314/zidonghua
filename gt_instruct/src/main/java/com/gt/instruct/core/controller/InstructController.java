@@ -138,4 +138,26 @@ public class InstructController {
         }
     }
 
+    /**
+     * 更换目录不需要的文件
+     *
+     * @param projectName
+     * @return
+     */
+    @ApiOperation(value = "更换目录不需要的文件")
+    @RequestMapping(value = "rumChgcmd/{projectName}", method = RequestMethod.POST)
+    public ResponseDTO rumChgcmd(@PathVariable String projectName) {
+        try {
+            logger.debug(projectName);
+            String results = instructService.rumChgcmd(projectName);
+            return ResponseDTO.createBySuccess(results);
+        } catch (SystemException e) {
+            logger.error(e.getMessage(), e.fillInStackTrace());
+            return ResponseDTO.createByErrorCodeMessage(e.getCode(), e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseDTO.createByError();
+        }
+    }
+
 }

@@ -51,4 +51,12 @@ public interface InstructService {
      * @return
      */
     String rumPscmd(String projectName) throws Exception;
+
+    /**
+     * 更换目录不需要的文件
+     *
+     * @param projectName
+     * @return
+     */
+    String rumChgcmd(String projectName) throws Exception;
 }

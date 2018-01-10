@@ -21,6 +21,8 @@ instruct:
     prefix: syn
   ps:
     prefix: ps
+  chg:
+      prefix: chg
 
 ###### spring
 spring:

@@ -30,6 +30,7 @@
                 <el-button @click="killps(tableData[scope.$index])" type="text" size="small">清理PID</el-button>
                 <el-button @click="synchro(tableData[scope.$index])" type="text" size="small">代码同步</el-button>
                 <el-button @click="startcmd(tableData[scope.$index])" type="text" size="small">启动服务</el-button>
+                <el-button @click="chgcmd(tableData[scope.$index])" type="text" size="small">目录更换</el-button>
             </template>
         </el-table-column>
     </el-table>
