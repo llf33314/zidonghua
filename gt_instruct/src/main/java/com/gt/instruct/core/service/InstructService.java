@@ -42,7 +42,7 @@ public interface InstructService {
      *
      * @return
      */
-    List<Server> listServer() throws Exception;
+    List<Server> listServer(String token) throws Exception;
 
     /**
      * 清除PID

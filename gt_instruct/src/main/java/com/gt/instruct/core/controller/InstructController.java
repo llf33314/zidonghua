@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -36,10 +37,11 @@ public class InstructController {
      */
     @ApiOperation(value = "获取服务列表")
     @RequestMapping(value = "listServer", method = RequestMethod.POST)
-    public ResponseDTO listServer() {
+    public ResponseDTO listServer(HttpServletRequest httpServletRequest) {
         try {
             logger.debug("listServer");
-            List<Server> serverList = instructService.listServer();
+            String token = (String) httpServletRequest.getSession().getAttribute("token");
+            List<Server> serverList = instructService.listServer(token);
             return ResponseDTO.createBySuccess(serverList);
         } catch (SystemException e) {
             logger.error(e.getMessage(), e.fillInStackTrace());
