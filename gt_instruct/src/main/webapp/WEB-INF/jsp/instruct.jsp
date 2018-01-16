@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>项目部署</title>
-    <%@ include file="common/taglib.jsp"%>
+    <%@ include file="common/taglib.jsp" %>
 </head>
 <body>
 <div id="vm">
@@ -17,12 +17,20 @@
         <el-table-column prop="serverName" label="服务名"></el-table-column>
         <el-table-column prop="projectName" label="项目名"></el-table-column>
         <el-table-column prop="projectDb" label="对应数据库"></el-table-column>
+        <el-table-column label="运行状态">
+            <template scope="scope">
+                <el-button type="info" v-if="scope.row.serverStatus == '' || scope.row.serverStatus == 0" size="small">检测中</el-button>
+                <el-button type="danger" v-else-if="scope.row.serverStatus != 200" size="small">停止</el-button>
+                <el-button type="success" v-else="scope.row.serverStatus == 200" size="small">正常运行</el-button>
+            </template>
+        </el-table-column>
         <el-table-column label="操作" fix>
             <template scope="scope">
                 <el-button @click="stopcmd(tableData[scope.$index])" type="text" size="small">关闭服务</el-button>
                 <el-button @click="killps(tableData[scope.$index])" type="text" size="small">清理PID</el-button>
                 <el-button @click="synchro(tableData[scope.$index])" type="text" size="small">代码同步</el-button>
                 <el-button @click="startcmd(tableData[scope.$index])" type="text" size="small">启动服务</el-button>
+                <el-button @click="chgcmd(tableData[scope.$index])" type="text" size="small">目录更换</el-button>
             </template>
         </el-table-column>
     </el-table>

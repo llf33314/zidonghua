@@ -1,12 +1,12 @@
 ################### 全局配置
 ####### server
 server:
-  port: 9802
+  port: 9805
 
 ####### instruct
 instruct:
   login:
-    redirectUrl: http://192.168.3.98:9802/token/
+    redirectUrl: http://192.168.3.98:9805/token/
     url: http://insos.duofee.com/sso/m/route/login?redirectUrl=${instruct.login.redirectUrl}
   sso:
     url: http://insos.duofee.com/stage/api/sso/
@@ -21,6 +21,8 @@ instruct:
     prefix: syn
   ps:
     prefix: ps
+  chg:
+      prefix: chg
 
 ###### spring
 spring:

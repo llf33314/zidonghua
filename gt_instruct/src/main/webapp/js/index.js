@@ -1,14 +1,21 @@
-// var basePscmdUrl = '/index/rumPscmd/';
 var baseStartcmdUrl = '/app/instruct/rumStartcmd/';
 var baseStopcmdUrl = '/app/instruct/rumStopcmd/';
 var baseSynchroUrl = '/app/instruct/rumSynchrocmd/';
 var basePscmdUrl = '/app/instruct/rumPscmd/';
+var baseChgcmdUrl = '/app/instruct/rumChgcmd/';
 var baseListServerUrl = '/app/instruct/listServer/';
 var vm = new Vue({
     el: '#vm',
     data: {
         tableData: [],
-        fullscreenLoading: false
+        fullscreenLoading: false,
+    },
+    mounted: function () {
+        this.forHealth();
+        var _this = this;
+        setInterval(function () {
+            _this.forHealth();
+        }, 5000);
     },
     created() {
         this.listServer();
@@ -43,7 +50,7 @@ var vm = new Vue({
                 .then(function (response) {
                     var _data = response.data;
                     _this.fullscreenLoading = false;
-                    console.log(_data);
+                    // console.log(_data);
                     if (_data.code == 100) {
                         _this.$alert("服务关闭", '运行结果');
                     } else {
@@ -63,7 +70,7 @@ var vm = new Vue({
                 .then(function (response) {
                     var _data = response.data;
                     _this.fullscreenLoading = false;
-                    console.log(_data);
+                    // console.log(_data);
                     if (_data.code == 100) {
                         _this.$alert("代码同步", '运行结果');
                     } else {
@@ -83,9 +90,29 @@ var vm = new Vue({
                 .then(function (response) {
                     var _data = response.data;
                     _this.fullscreenLoading = false;
-                    console.log(_data);
+                    // console.log(_data);
                     if (_data.code == 100) {
                         _this.$alert("清理PID", '运行结果');
+                    } else {
+                        _this.$alert(_data.message, '请求失败');
+                    }
+                })
+                .catch(function () {
+                    _this.fullscreenLoading = false;
+                });
+        },
+        chgcmd: function (paramData) {
+            // 更换目录
+            this.fullscreenLoading = true;
+            var _url = baseChgcmdUrl + paramData.projectName;
+            var _this = this;
+            axios.post(_url)
+                .then(function (response) {
+                    var _data = response.data;
+                    _this.fullscreenLoading = false;
+                    // console.log(_data);
+                    if (_data.code == 100) {
+                        _this.$alert("更换目录", '运行结果');
                     } else {
                         _this.$alert(_data.message, '请求失败');
                     }
@@ -103,10 +130,10 @@ var vm = new Vue({
                 .then(function (response) {
                     var _data = response.data;
                     _this.fullscreenLoading = false;
-                    console.log(_data);
+                    // console.log(_data);
                     if (_data.code == 100) {
                         _this.tableData = _data.data;
-                        console.log(_this.tableData);
+                        // console.log(_this.tableData);
                     } else {
                         _this.$alert(_data.message, '请求失败');
                     }
@@ -114,6 +141,27 @@ var vm = new Vue({
                 .catch(function () {
                     _this.fullscreenLoading = false;
                 });
+        },
+        forHealth: function () {
+            // 健康检测循环
+            var _this = this;
+            this.tableData.forEach(function (item, index) {
+                _this.isHealth(item, index);
+            });
+        },
+        isHealth: function (paramData, id) {
+            // 健康检测
+            if (paramData.serverHealthUrl == null || paramData.serverHealthUrl == ''){
+                return;
+            }
+            var _this = this;
+            var _url = paramData.serverHealthUrl;
+            axios.get(_url).then(res => {
+                // console.log(res.status);
+                _this.tableData[id].serverStatus = res.status;
+            }).catch(error => {
+                _this.tableData[id].serverStatus = 0;
+            });
         }
     }
 });
