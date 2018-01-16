@@ -12,7 +12,7 @@ var vm = new Vue({
     },
     mounted: function () {
         this.forHealth();
-        var _this = this;
+        let _this = this;
         setInterval(function () {
             _this.forHealth();
         }, 5000);
@@ -22,116 +22,51 @@ var vm = new Vue({
     },
     methods: {
         startcmd: function (paramData) {
-            // 启动服务
-            this.fullscreenLoading = true;
-            var _url = baseStartcmdUrl + paramData.projectName;
-            var _this = this;
-            axios.post(_url)
-                .then(function (response) {
-                    var _data = response.data;
-                    _this.fullscreenLoading = false;
-                    console.log(_data);
-                    if (_data.code == 100) {
-                        _this.$alert("服务启动", '运行结果');
-                    } else {
-                        _this.$alert(_data.message, '请求失败');
-                    }
-                })
-                .catch(function () {
-                    _this.fullscreenLoading = false;
-                });
+            this.instructCmd('启动服务', baseStartcmdUrl, paramData);
         },
         stopcmd: function (paramData) {
-            // 关闭服务
-            this.fullscreenLoading = true;
-            var _url = baseStopcmdUrl + paramData.projectName;
-            var _this = this;
-            axios.post(_url)
-                .then(function (response) {
-                    var _data = response.data;
-                    _this.fullscreenLoading = false;
-                    // console.log(_data);
-                    if (_data.code == 100) {
-                        _this.$alert("服务关闭", '运行结果');
-                    } else {
-                        _this.$alert(_data.message, '请求失败');
-                    }
-                })
-                .catch(function () {
-                    _this.fullscreenLoading = false;
-                });
+            this.instructCmd('关闭服务', baseStopcmdUrl, paramData);
         },
         synchro: function (paramData) {
-            // 同步代码
-            this.fullscreenLoading = true;
-            var _url = baseSynchroUrl + paramData.projectName;
-            var _this = this;
-            axios.post(_url)
-                .then(function (response) {
-                    var _data = response.data;
-                    _this.fullscreenLoading = false;
-                    // console.log(_data);
-                    if (_data.code == 100) {
-                        _this.$alert("代码同步", '运行结果');
-                    } else {
-                        _this.$alert(_data.message, '请求失败');
-                    }
-                })
-                .catch(function () {
-                    _this.fullscreenLoading = false;
-                });
+            this.instructCmd('同步代码', baseSynchroUrl, paramData);
         },
         killps: function (paramData) {
-            // 清理PID
-            this.fullscreenLoading = true;
-            var _url = basePscmdUrl + paramData.projectName;
-            var _this = this;
-            axios.post(_url)
-                .then(function (response) {
-                    var _data = response.data;
-                    _this.fullscreenLoading = false;
-                    // console.log(_data);
-                    if (_data.code == 100) {
-                        _this.$alert("清理PID", '运行结果');
-                    } else {
-                        _this.$alert(_data.message, '请求失败');
-                    }
-                })
-                .catch(function () {
-                    _this.fullscreenLoading = false;
-                });
+            this.instructCmd('清理PID', basePscmdUrl, paramData);
         },
         chgcmd: function (paramData) {
-            // 更换目录
+            this.instructCmd('更换目录', baseChgcmdUrl, paramData);
+        },
+        instructCmd: function (instructName, baseInstructUrl, paramData) {
             this.fullscreenLoading = true;
-            var _url = baseChgcmdUrl + paramData.projectName;
-            var _this = this;
-            axios.post(_url)
-                .then(function (response) {
-                    var _data = response.data;
+            this.$confirm('此操作将直接' + instructName + ', 是否继续?', instructName, {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'info'
+            }).then(() => {
+                let _url = baseInstructUrl + paramData.projectName;
+                let _this = this;
+                axios.post(_url).then(function (response) {
                     _this.fullscreenLoading = false;
-                    // console.log(_data);
-                    if (_data.code == 100) {
-                        _this.$alert("更换目录", '运行结果');
-                    } else {
-                        _this.$alert(_data.message, '请求失败');
-                    }
-                })
-                .catch(function () {
+                    let _data = response.data;
+                    _this.$alert(_data.data, _data.code === 100 ? '请求成功' : '请求失败');
+                }).catch(function () {
                     _this.fullscreenLoading = false;
                 });
+            }).catch(() => {
+                this.fullscreenLoading = false;
+            });
         },
         listServer: function () {
             // 获取服务列表
             this.fullscreenLoading = true;
-            var _url = baseListServerUrl;
-            var _this = this;
-            axios.post(_url)
+            let _url = baseListServerUrl;
+            let _this = this;
+            axios.post(baseListServerUrl)
                 .then(function (response) {
-                    var _data = response.data;
+                    let _data = response.data;
                     _this.fullscreenLoading = false;
                     // console.log(_data);
-                    if (_data.code == 100) {
+                    if (_data.code === 100) {
                         _this.tableData = _data.data;
                         // console.log(_this.tableData);
                     } else {
@@ -144,23 +79,23 @@ var vm = new Vue({
         },
         forHealth: function () {
             // 健康检测循环
-            var _this = this;
+            let _this = this;
             this.tableData.forEach(function (item, index) {
                 _this.isHealth(item, index);
             });
         },
         isHealth: function (paramData, id) {
             // 健康检测
-            if (paramData.serverHealthUrl == null || paramData.serverHealthUrl == ''){
+            if (!paramData.serverHealthUrl) {
                 return;
             }
-            var _this = this;
-            var _url = paramData.serverHealthUrl;
+            let _this = this;
+            let _url = paramData.serverHealthUrl;
             axios.get(_url).then(res => {
                 // console.log(res.status);
                 _this.tableData[id].serverStatus = res.status;
             }).catch(error => {
-                _this.tableData[id].serverStatus = 0;
+                _this.tableData[id].serverStatus = -1;
             });
         }
     }

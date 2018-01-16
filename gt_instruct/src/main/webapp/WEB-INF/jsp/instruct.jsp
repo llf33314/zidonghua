@@ -19,13 +19,14 @@
         <el-table-column prop="projectDb" label="对应数据库"></el-table-column>
         <el-table-column label="运行状态">
             <template scope="scope">
-                <el-button type="info" v-if="scope.row.serverStatus == '' || scope.row.serverStatus == 0" size="small">检测中</el-button>
-                <el-button type="danger" v-else-if="scope.row.serverStatus != 200" size="small">停止</el-button>
-                <el-button type="success" v-else="scope.row.serverStatus == 200" size="small">正常运行</el-button>
+                <el-button type="info" v-if="!scope.row.serverStatus" size="small">检测中</el-button>
+                <el-button type="success" v-else-if="scope.row.serverStatus == 200" size="small">正常运行</el-button>
+                <el-button type="danger" v-else size="small">停止</el-button>
             </template>
         </el-table-column>
         <el-table-column label="操作" fix>
             <template scope="scope">
+                <%--TODO 这里的按钮应该根据运行状态进行显示隐藏--%>
                 <el-button @click="stopcmd(tableData[scope.$index])" type="text" size="small">关闭服务</el-button>
                 <el-button @click="killps(tableData[scope.$index])" type="text" size="small">清理PID</el-button>
                 <el-button @click="synchro(tableData[scope.$index])" type="text" size="small">代码同步</el-button>
