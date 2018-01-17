@@ -12,11 +12,12 @@
 		<result column="server_health_url" property="serverHealthUrl" />
 		<result column="server_status" property="serverStatus" />
 		<result column="create_time" property="createTime" />
+		<result column="log_directory" property="logDirectory" />
 	</resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, server_name, server_env, project_name, project_db, server_health_url, server_status, create_time
+        id, server_name, server_env, project_name, project_db, server_health_url, server_status, create_time, log_directory
     </sql>
 
 </mapper>
