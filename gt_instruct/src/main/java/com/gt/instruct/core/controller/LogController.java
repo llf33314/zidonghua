@@ -2,6 +2,7 @@ package com.gt.instruct.core.controller;
 
 import com.gt.instruct.common.dto.ResponseDTO;
 import com.gt.instruct.common.exception.SystemException;
+import com.gt.instruct.common.util.OsUtil;
 import com.gt.instruct.core.service.LogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
@@ -86,10 +88,12 @@ public class LogController {
         try {
             logger.debug("下载日志文件");
             List<String> logFileContentList = logService.listLogFileContent(projectName, logFileName);
+            String[] filePaths = logFileName.split(OsUtil.isLinux() ? "/" : "\\\\");
+            String downLoadFileName = projectName + "_" + filePaths[filePaths.length - 1];
 
             response.reset();
             outputStream = new BufferedOutputStream(response.getOutputStream());
-            response.setHeader("Content-Disposition", "attachment;filename=\"" + URLEncoder.encode(logFileName, "UTF-8") + "\"");
+            response.setHeader("Content-Disposition", "attachment;filename=\"" + URLEncoder.encode(downLoadFileName, "UTF-8") + "\"");
             response.setContentType("text/plain");
             for (String logFileContent : logFileContentList) {
                 outputStream.write(logFileContent.getBytes());
