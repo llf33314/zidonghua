@@ -32,6 +32,7 @@
                 <el-button @click="synchro(tableData[scope.$index])" type="text" size="small">代码同步</el-button>
                 <el-button @click="startcmd(tableData[scope.$index])" type="text" size="small">启动服务</el-button>
                 <el-button @click="chgcmd(tableData[scope.$index])" type="text" size="small">目录更换</el-button>
+                <el-button @click="toLog(tableData[scope.$index])" type="text" size="small">查看日志</el-button>
             </template>
         </el-table-column>
     </el-table>

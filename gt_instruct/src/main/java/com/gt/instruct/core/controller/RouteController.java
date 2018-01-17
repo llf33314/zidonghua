@@ -1,7 +1,9 @@
 package com.gt.instruct.core.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * Created by psr on 2018/1/9 0009.
@@ -11,8 +13,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class RouteController {
 
     @RequestMapping("/index")
-    public String toIndex(){
+    public String toIndex() {
         return "instruct";
+    }
+
+    @RequestMapping("/log")
+    public String toLog(@RequestParam(value = "projectName") String projectName, ModelMap modelMap) {
+        modelMap.put("projectName", projectName);
+        return "log";
     }
 
 }

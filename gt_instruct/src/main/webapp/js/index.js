@@ -45,11 +45,12 @@ var vm = new Vue({
             }).then(() => {
                 let _url = baseInstructUrl + paramData.projectName;
                 let _this = this;
-                axios.post(_url).then(function (response) {
-                    _this.fullscreenLoading = false;
-                    let _data = response.data;
-                    _this.$alert(_data.data, _data.code === 100 ? '请求成功' : '请求失败');
-                }).catch(function () {
+                axios.post(_url)
+                    .then(function (response) {
+                        _this.fullscreenLoading = false;
+                        let _data = response.data;
+                        _this.$alert(_data.data, _data.code === 100 ? '请求成功' : '请求失败');
+                    }).catch(function () {
                     _this.fullscreenLoading = false;
                 });
             }).catch(() => {
@@ -97,6 +98,10 @@ var vm = new Vue({
             }).catch(error => {
                 _this.tableData[id].serverStatus = -1;
             });
+        },
+        toLog: function (paramData) {
+            let url = '/app/route/log?projectName=' + paramData.projectName;
+            window.open(url);
         }
     }
 });
