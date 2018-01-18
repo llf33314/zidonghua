@@ -14,7 +14,6 @@
     <br/>
     <el-table :data="tableData" stripe highlight-current-row style="width: 100%">
         <el-table-column prop="serverEnv" label="对应环境"></el-table-column>
-        <el-table-column prop="serverName" label="服务名"></el-table-column>
         <el-table-column prop="projectName" label="项目名"></el-table-column>
         <el-table-column prop="projectDb" label="对应数据库"></el-table-column>
         <el-table-column label="运行状态">
@@ -24,6 +23,7 @@
                 <el-button type="danger" v-else size="small">停止</el-button>
             </template>
         </el-table-column>
+        <el-table-column prop="serverName" label="服务名"></el-table-column>
         <el-table-column label="操作" fix>
             <template scope="scope">
                 <%--TODO 这里的按钮应该根据运行状态进行显示隐藏--%>

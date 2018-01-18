@@ -9,12 +9,46 @@ var vm = new Vue({
         logFileContentPosition: 0
     },
     mounted: function () {
-        this.projectName = document.getElementById("projectName").value;
-        this.getLogFileNameOptions();
+        let _this = this;
+        _this.projectName = document.getElementById("projectName").value;
+        _this.getLogFileNameOptions();
+        setInterval(function () {
+            _this.getLogFileContent()
+        }, 1000);
+        _this.$notify({
+            title: '关于catalina日志',
+            message: '默认加载倒数30行，若有更新，将自动加载',
+            position: 'bottom-right'
+        });
     },
     created() {
     },
     methods: {
+        getLogFileContent() {
+            let _this = this;
+            if (!_this.isLogContentReqDone) {
+                return;
+            }
+            _this.isLogContentReqDone = false;
+            let url = "/app/log/content?projectName=" + _this.projectName + "&position=" + _this.logFileContentPosition;
+            axios.get(url)
+                .then(function (res) {
+                    let _data = res.data;
+                    if (_data.code === 100) {
+                        _this.logFileContent += _data.data['content'];
+                        _this.logFileContentPosition = _data.data['position'];
+                    } else {
+                        _this.$alert(_data.msg, '请求失败', {
+                            type: 'warning',
+                            center: true
+                        });
+                    }
+                    _this.isLogContentReqDone = true;
+                })
+                .catch(() => {
+                    _this.isLogContentReqDone = true;
+                });
+        },
         getLogFileNameOptions() {
             let _this = this;
             let url = "/app/log/list?projectName=" + _this.projectName;
@@ -45,38 +79,8 @@ var vm = new Vue({
             let _this = this;
             if (_this.logFileName !== selectedValues[0]) {
                 _this.logFileName = selectedValues[0];
-                setInterval(function () {
-                    _this.getLogFileContent()
-                }, 1000);
-            }
-        },
-        getLogFileContent() {
-            let _this = this;
-            console.log(_this.isLogContentReqDone);
-            console.log(_this.logFileContentPosition);
-            if (!_this.isLogContentReqDone) {
-                return;
-            }
-            _this.isLogContentReqDone = false;
-            let url = "/app/log/content?projectName=" + _this.projectName + "&logFileName=" + _this.logFileName + "&position=" + _this.logFileContentPosition;
-            axios.get(url)
-                .then(function (res) {
-                    let _data = res.data;
-                    if (_data.code === 100) {
-                        _this.logFileContent += _data.data['content'];
-                        _this.logFileContentPosition = _data.data['position'];
-                    } else {
-                        _this.$alert(_data.msg, '请求失败', {
-                            type: 'warning',
-                            center: true
-                        });
-                    }
-                    _this.isLogContentReqDone = true;
-                })
-                .catch(() => {
-                    _this.isLogContentReqDone = true;
-                });
 
+            }
         },
         downloadLogFile() {
             let _this = this;

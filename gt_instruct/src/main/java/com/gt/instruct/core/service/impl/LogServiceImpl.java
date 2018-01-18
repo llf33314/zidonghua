@@ -20,6 +20,7 @@ import java.util.*;
 @Service
 public class LogServiceImpl implements LogService {
     private static int DEFAULT_LINE_COUNT = 30;
+    private static String DEFAULT_LOG_FILE = "catalina.out";
 
     @Autowired
     private ServerService serverService;
@@ -70,8 +71,8 @@ public class LogServiceImpl implements LogService {
     }
 
     @Override
-    public Map<String, Object> getLogFileContent(String projectName, String logFileName, Long optPosition) throws Exception {
-        if (projectName == null || logFileName == null) {
+    public Map<String, Object> getLogFileContent(String projectName, Long optPosition) throws Exception {
+        if (projectName == null) {
             throw new SystemException("参数错误");
         }
 
@@ -85,11 +86,8 @@ public class LogServiceImpl implements LogService {
             throw new SystemException("没有设置服务日志位置");
         }
 
-        if (!logFileName.contains(logDirectoryPath)) {
-            throw new SystemException("日志不在可查看的范围内");
-        }
-
-        File logFile = new File(logFileName);
+        String logFilePath = logDirectoryPath + File.separator + DEFAULT_LOG_FILE;
+        File logFile = new File(logFilePath);
         if (!logFile.exists()) {
             throw new SystemException("找不到日志文件");
         }
@@ -146,7 +144,6 @@ public class LogServiceImpl implements LogService {
         if (logDirectoryPath == null) {
             throw new SystemException("没有设置服务日志位置");
         }
-
         if (!logFileName.contains(logDirectoryPath)) {
             throw new SystemException("日志不在可查看的范围内");
         }
@@ -160,7 +157,7 @@ public class LogServiceImpl implements LogService {
         List<String> result = new ArrayList<>();
         String temp;
         while ((temp = randomAccessFile.readLine()) != null) {
-            result.add(new String(temp.getBytes("ISO8859-1"), "gb2312") + "\n");
+            result.add(new String(temp.getBytes("ISO8859-1"), "gb2312") + "\r\n");
         }
 
         return result;

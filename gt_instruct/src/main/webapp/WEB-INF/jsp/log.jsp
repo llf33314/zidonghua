@@ -22,12 +22,18 @@
         <el-alert title="说明" type="success" description="服务器ip：113.106.202.51"></el-alert>
     </el-row>
     <el-row>
-        <el-cascader placeholder="请选择日志文件" :options="logFileNameOptions" @change="changeLogFileName" filterable
-                     style="width: 91%"></el-cascader>
-        <el-button @click="downloadLogFile">下载完整日志文件</el-button>
+        下载完整日志文件:
     </el-row>
     <el-row>
-        <el-input type="textarea" :rows="40" placeholder="暂无日志内容" v-model="logFileContent" :disabled="true"></el-input>
+        <el-cascader placeholder="请选择日志文件" :options="logFileNameOptions" @change="changeLogFileName" filterable
+                     style="width: 96.4%"></el-cascader>
+        <el-button @click="downloadLogFile">下载</el-button>
+    </el-row>
+    <el-row>
+        catalina日志：
+    </el-row>
+    <el-row>
+        <el-input type="textarea" :rows="39" placeholder="暂无日志内容" v-model="logFileContent" :readonly="true"></el-input>
     </el-row>
     <br/>
     <input id="projectName" type="hidden" value="${projectName}"/>

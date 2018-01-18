@@ -21,12 +21,11 @@ public interface LogService {
      * 获取日志文件内容
      *
      * @param projectName 项目名称
-     * @param logFileName 日志文件名
      * @param optPosition 内容开始位置
      * @return String
      * @throws Exception Exception
      */
-    Map<String, Object> getLogFileContent(String projectName, String logFileName, Long optPosition) throws Exception;
+    Map<String, Object> getLogFileContent(String projectName, Long optPosition) throws Exception;
 
     /**
      * 获取日志文件所有内容

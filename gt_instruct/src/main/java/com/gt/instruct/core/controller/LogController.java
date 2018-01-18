@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
@@ -42,7 +41,7 @@ public class LogController {
             @ApiParam(value = "项目名称", name = "projectName", required = true)
             @RequestParam(value = "projectName") String projectName) {
         try {
-            logger.debug("获取日志文件名列表");
+            logger.debug("获取日志文件名列表(" + projectName + ")");
             List<String> result = logService.listLogFileName(projectName);
             return ResponseDTO.createBySuccess(result);
         } catch (SystemException e) {
@@ -59,13 +58,11 @@ public class LogController {
     public ResponseDTO getLogFileContent(
             @ApiParam(value = "项目名称", name = "projectName", required = true)
             @RequestParam(value = "projectName") String projectName,
-            @ApiParam(value = "日志文件名", name = "logFileName", required = true)
-            @RequestParam(value = "logFileName") String logFileName,
             @ApiParam(value = "日志内容开始位置", name = "position")
             @RequestParam(value = "position", required = false) Long optPosition) {
         try {
-            logger.debug("获取日志文件内容");
-            Map<String, Object> result = logService.getLogFileContent(projectName, logFileName, optPosition);
+            logger.debug("获取日志文件内容(" + projectName + ")");
+            Map<String, Object> result = logService.getLogFileContent(projectName, optPosition);
             return ResponseDTO.createBySuccess(result);
         } catch (SystemException e) {
             logger.error(e.getMessage(), e.fillInStackTrace());
@@ -86,7 +83,7 @@ public class LogController {
             @RequestParam(value = "logFileName") String logFileName) {
         OutputStream outputStream = null;
         try {
-            logger.debug("下载日志文件");
+            logger.debug("下载日志文件(" + projectName + ")");
             List<String> logFileContentList = logService.listLogFileContent(projectName, logFileName);
             String[] filePaths = logFileName.split(OsUtil.isLinux() ? "/" : "\\\\");
             String downLoadFileName = projectName + "_" + filePaths[filePaths.length - 1];

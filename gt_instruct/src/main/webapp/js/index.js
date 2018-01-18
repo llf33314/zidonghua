@@ -7,15 +7,15 @@ var baseListServerUrl = '/app/instruct/listServer/';
 var vm = new Vue({
     el: '#vm',
     data: {
+        heartBeatReqDone: {},
         tableData: [],
         fullscreenLoading: false,
     },
     mounted: function () {
-        this.forHealth();
         let _this = this;
         setInterval(function () {
-            _this.forHealth();
-        }, 5000);
+            _this.checkStatus();
+        }, 1000);
     },
     created() {
         this.listServer();
@@ -78,25 +78,39 @@ var vm = new Vue({
                     _this.fullscreenLoading = false;
                 });
         },
-        forHealth: function () {
-            // 健康检测循环
+        checkStatus() {
             let _this = this;
-            this.tableData.forEach(function (item, index) {
-                _this.isHealth(item, index);
+            _this.tableData.forEach(function (item, index) {
+                _this.heartBeat(item, index);
             });
         },
-        isHealth: function (paramData, id) {
-            // 健康检测
+        heartBeat(paramData, id) {
             if (!paramData.serverHealthUrl) {
                 return;
             }
             let _this = this;
-            let _url = paramData.serverHealthUrl;
+            if (_this.heartBeatReqDone[paramData.projectName] === undefined || _this.heartBeatReqDone[paramData.projectName] === null) {
+                _this.heartBeatReqDone[paramData.projectName] = true;
+            }
+            if (!_this.heartBeatReqDone[paramData.projectName]) {
+                return;
+            }
+            _this.heartBeatReqDone[paramData.projectName] = false;
+            let _url = "/app/heartBeat?projectName=" + paramData.projectName;
             axios.get(_url).then(res => {
-                // console.log(res.status);
-                _this.tableData[id].serverStatus = res.status;
+                let _data = res.data;
+                if (_data.code === 100) {
+                    _this.tableData[id].serverStatus = _data.data;
+                } else {
+                    _this.$alert(_data.msg, '请求失败', {
+                        type: 'warning',
+                        center: true
+                    });
+                }
+                _this.heartBeatReqDone[paramData.projectName] = true;
             }).catch(error => {
                 _this.tableData[id].serverStatus = -1;
+                _this.heartBeatReqDone[paramData.projectName] = true;
             });
         },
         toLog: function (paramData) {
