@@ -1,5 +1,6 @@
 package com.gt.instruct.common.util;
 
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -12,9 +13,20 @@ import java.io.IOException;
  * @version 2018-01-18 10:38:15
  */
 public class HttpUtil {
+    private static int DEFAULT_TIME_OUT = 5000;
+
     public static int httpGet(String url) {
-        CloseableHttpClient httpClient = HttpClients.createDefault();
+        RequestConfig requestConfig = RequestConfig.custom()
+                .setSocketTimeout(DEFAULT_TIME_OUT)
+                .setConnectionRequestTimeout(DEFAULT_TIME_OUT)
+                .setConnectionRequestTimeout(DEFAULT_TIME_OUT)
+                .setStaleConnectionCheckEnabled(true)
+                .build();
+        CloseableHttpClient httpClient = HttpClients.custom()
+                .setDefaultRequestConfig(requestConfig)
+                .build();
         HttpGet httpGet = new HttpGet(url);
+        httpGet.setConfig(requestConfig);
         CloseableHttpResponse httpResponse = null;
         try {
             httpResponse = httpClient.execute(httpGet);

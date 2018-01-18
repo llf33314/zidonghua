@@ -14,7 +14,7 @@ var vm = new Vue({
         _this.getLogFileNameOptions();
         setInterval(function () {
             _this.getLogFileContent()
-        }, 1000);
+        }, 2000);
         _this.$notify({
             title: '关于catalina日志',
             message: '默认加载倒数30行，若有更新，将自动加载',
@@ -38,10 +38,7 @@ var vm = new Vue({
                         _this.logFileContent += _data.data['content'];
                         _this.logFileContentPosition = _data.data['position'];
                     } else {
-                        _this.$alert(_data.msg, '请求失败', {
-                            type: 'warning',
-                            center: true
-                        });
+                        console.log(_data);
                     }
                     _this.isLogContentReqDone = true;
                 })
@@ -66,10 +63,7 @@ var vm = new Vue({
                         });
                         _this.logFileNameOptions = logFileNameOptions;
                     } else {
-                        _this.$alert(_data.msg, '请求失败', {
-                            type: 'warning',
-                            center: true
-                        });
+                        console.log(_data);
                     }
                 })
                 .catch(() => {
