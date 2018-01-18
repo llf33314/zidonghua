@@ -6,7 +6,7 @@ server:
 ####### instruct
 instruct:
   login:
-    redirectUrl: http://zidong.deeptel.com.cn/token/
+    redirectUrl: http://localhost:9805/token/
     url: http://insos.duofee.com/sso/m/route/login?redirectUrl=${instruct.login.redirectUrl}
   sso:
     url: http://insos.duofee.com/stage/api/sso/
