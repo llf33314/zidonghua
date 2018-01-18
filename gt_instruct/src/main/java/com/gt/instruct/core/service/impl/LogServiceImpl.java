@@ -110,7 +110,7 @@ public class LogServiceImpl implements LogService {
         int lineCount = 0;
         String temp;
         while ((temp = randomAccessFile.readLine()) != null) {
-            lineContentList.add(new String(temp.getBytes("ISO8859-1"), "gb2312"));
+            lineContentList.add(new String(temp.getBytes("ISO8859-1"), "UTF-8"));
             lineCount++;
         }
 
@@ -157,7 +157,7 @@ public class LogServiceImpl implements LogService {
         List<String> result = new ArrayList<>();
         String temp;
         while ((temp = randomAccessFile.readLine()) != null) {
-            result.add(new String(temp.getBytes("ISO8859-1"), "gb2312") + "\r\n");
+            result.add(new String(temp.getBytes("ISO8859-1"), "UTF-8") + "\r\n");
         }
 
         return result;

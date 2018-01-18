@@ -15,10 +15,12 @@ var vm = new Vue({
         let _this = this;
         setInterval(function () {
             _this.checkStatus();
-        }, 1000);
+        }, 10000);
     },
     created() {
-        this.listServer();
+        let _this = this;
+        _this.listServer();
+        _this.checkStatus();
     },
     methods: {
         startcmd: function (paramData) {
@@ -102,10 +104,7 @@ var vm = new Vue({
                 if (_data.code === 100) {
                     _this.tableData[id].serverStatus = _data.data;
                 } else {
-                    _this.$alert(_data.msg, '请求失败', {
-                        type: 'warning',
-                        center: true
-                    });
+                    console.log(_data);
                 }
                 _this.heartBeatReqDone[paramData.projectName] = true;
             }).catch(error => {
