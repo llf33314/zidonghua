@@ -13,11 +13,12 @@
 		<result column="server_status" property="serverStatus" />
 		<result column="create_time" property="createTime" />
 		<result column="log_directory" property="logDirectory" />
+		<result column="log_charset" property="logCharset" />
 	</resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, server_name, server_env, project_name, project_db, server_health_url, server_status, create_time, log_directory
+        id, server_name, server_env, project_name, project_db, server_health_url, server_status, create_time, log_directory, log_charset
     </sql>
 
 </mapper>

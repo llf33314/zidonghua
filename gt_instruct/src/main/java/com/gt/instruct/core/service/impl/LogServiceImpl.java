@@ -93,7 +93,7 @@ public class LogServiceImpl implements LogService {
         }
 
         RandomAccessFile randomAccessFile = new RandomAccessFile(logFile, "r");
-        String logContent = getLogContent(randomAccessFile, optPosition);
+        String logContent = getLogContent(randomAccessFile, server.getLogCharset(), optPosition);
 
         Map<String, Object> result = new HashMap<>(2);
         result.put("content", logContent);
@@ -102,7 +102,8 @@ public class LogServiceImpl implements LogService {
         return result;
     }
 
-    private String getLogContent(RandomAccessFile randomAccessFile, Long optPosition) throws Exception {
+    private String getLogContent(RandomAccessFile randomAccessFile, String logCharset, Long optPosition) throws Exception {
+        logCharset = logCharset != null ? logCharset : "UTF-8";
         optPosition = optPosition != null ? optPosition : 0L;
         randomAccessFile.seek(optPosition);
 
@@ -110,7 +111,7 @@ public class LogServiceImpl implements LogService {
         int lineCount = 0;
         String temp;
         while ((temp = randomAccessFile.readLine()) != null) {
-            lineContentList.add(new String(temp.getBytes("ISO8859-1"), "UTF-8"));
+            lineContentList.add(new String(temp.getBytes("ISO8859-1"), logCharset));
             lineCount++;
         }
 
@@ -156,8 +157,9 @@ public class LogServiceImpl implements LogService {
         RandomAccessFile randomAccessFile = new RandomAccessFile(logFile, "r");
         List<String> result = new ArrayList<>();
         String temp;
+        String logCharset = server.getLogCharset() != null ? server.getLogCharset() : "UTF-8";
         while ((temp = randomAccessFile.readLine()) != null) {
-            result.add(new String(temp.getBytes("ISO8859-1"), "UTF-8") + "\r\n");
+            result.add(new String(temp.getBytes("ISO8859-1"), logCharset) + "\r\n");
         }
 
         return result;

@@ -64,6 +64,11 @@ public class Server extends Model<Server> {
      */
     private String logDirectory;
 
+    /**
+     * 日志文件编码
+     */
+    private String logCharset;
+
     public Integer getId() {
         return id;
     }
@@ -134,6 +139,14 @@ public class Server extends Model<Server> {
 
     public void setLogDirectory(String logDirectory) {
         this.logDirectory = logDirectory;
+    }
+
+    public String getLogCharset() {
+        return logCharset;
+    }
+
+    public void setLogCharset(String logCharset) {
+        this.logCharset = logCharset;
     }
 
     @Override
