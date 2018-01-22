@@ -94,9 +94,11 @@ public class LogServiceImpl implements LogService {
 
         RandomAccessFile randomAccessFile = null;
         String logContent;
+        long position;
         try {
             randomAccessFile = new RandomAccessFile(logFile, "r");
             logContent = getLogContent(randomAccessFile, server.getLogCharset(), optPosition);
+            position = randomAccessFile.length();
         } finally {
             if (randomAccessFile != null) {
                 randomAccessFile.close();
@@ -105,7 +107,7 @@ public class LogServiceImpl implements LogService {
 
         Map<String, Object> result = new HashMap<>(2);
         result.put("content", logContent);
-        result.put("position", randomAccessFile.length());
+        result.put("position", position);
 
         return result;
     }
