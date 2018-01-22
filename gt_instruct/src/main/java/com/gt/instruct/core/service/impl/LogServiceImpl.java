@@ -92,8 +92,16 @@ public class LogServiceImpl implements LogService {
             throw new SystemException("找不到日志文件");
         }
 
-        RandomAccessFile randomAccessFile = new RandomAccessFile(logFile, "r");
-        String logContent = getLogContent(randomAccessFile, server.getLogCharset(), optPosition);
+        RandomAccessFile randomAccessFile = null;
+        String logContent;
+        try {
+            randomAccessFile = new RandomAccessFile(logFile, "r");
+            logContent = getLogContent(randomAccessFile, server.getLogCharset(), optPosition);
+        } finally {
+            if (randomAccessFile != null) {
+                randomAccessFile.close();
+            }
+        }
 
         Map<String, Object> result = new HashMap<>(2);
         result.put("content", logContent);
@@ -154,12 +162,19 @@ public class LogServiceImpl implements LogService {
             throw new SystemException("找不到日志文件");
         }
 
-        RandomAccessFile randomAccessFile = new RandomAccessFile(logFile, "r");
+        RandomAccessFile randomAccessFile = null;
         List<String> result = new ArrayList<>();
-        String temp;
-        String logCharset = server.getLogCharset() != null ? server.getLogCharset() : "UTF-8";
-        while ((temp = randomAccessFile.readLine()) != null) {
-            result.add(new String(temp.getBytes("ISO8859-1"), logCharset) + "\r\n");
+        try {
+            randomAccessFile = new RandomAccessFile(logFile, "r");
+            String temp;
+            String logCharset = server.getLogCharset() != null ? server.getLogCharset() : "UTF-8";
+            while ((temp = randomAccessFile.readLine()) != null) {
+                result.add(new String(temp.getBytes("ISO8859-1"), logCharset) + "\r\n");
+            }
+        } finally {
+            if (randomAccessFile != null) {
+                randomAccessFile.close();
+            }
         }
 
         return result;
