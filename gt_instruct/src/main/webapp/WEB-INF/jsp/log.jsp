@@ -26,8 +26,9 @@
     </el-row>
     <el-row>
         <el-cascader placeholder="请选择日志文件" :options="logFileNameOptions" @change="changeLogFileName" filterable
-                     style="width: 96.4%"></el-cascader>
+                     style="width: 88%"></el-cascader>
         <el-button @click="downloadLogFile">下载</el-button>
+        <el-button type="success" id="btnAutoTraceLog" @click="changeAutoTraceLog">已开启自动跟踪</el-button>
     </el-row>
     <el-row>
         catalina日志：

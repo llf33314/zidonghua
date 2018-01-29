@@ -1,6 +1,7 @@
 var vm = new Vue({
     el: '#vm',
     data: {
+        isAutoTraceLog: true,
         isLogContentReqDone: true,
         projectName: '',
         logFileName: '',
@@ -13,8 +14,11 @@ var vm = new Vue({
         _this.projectName = document.getElementById("projectName").value;
         _this.getLogFileNameOptions();
         setInterval(function () {
-            _this.getLogFileContent()
+            _this.getLogFileContent();
         }, 2000);
+        setInterval(function () {
+            _this.checkAutoTraceLog();
+        }, 1000);
         _this.$notify({
             title: '关于catalina日志',
             message: '默认加载倒数30行，若有更新，将自动加载',
@@ -88,6 +92,27 @@ var vm = new Vue({
             }
             let url = "/app/log/download?projectName=" + _this.projectName + "&logFileName=" + _this.logFileName;
             window.open(url);
+        },
+        changeAutoTraceLog() {
+            let _this = this;
+            _this.isAutoTraceLog = !_this.isAutoTraceLog;
+            const btnAutoTraceLog = document.getElementById("btnAutoTraceLog");
+            if (_this.isAutoTraceLog) {
+                btnAutoTraceLog.innerText = '已开启自动跟踪';
+                btnAutoTraceLog.setAttribute('type', 'success');
+                btnAutoTraceLog.setAttribute('class', 'el-button el-button--success');
+            } else {
+                btnAutoTraceLog.innerText = '已取消自动跟踪';
+                btnAutoTraceLog.setAttribute('type', 'danger');
+                btnAutoTraceLog.setAttribute('class', 'el-button el-button--danger');
+            }
+        },
+        checkAutoTraceLog() {
+            let _this = this;
+            let textarea = document.getElementsByTagName("textarea")[0];
+            if (_this.isAutoTraceLog) {
+                textarea.scrollTop = textarea.scrollHeight;
+            }
         }
     }
 });
